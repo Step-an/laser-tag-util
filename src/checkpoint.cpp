@@ -9,6 +9,7 @@ uint16_t impulsesInUs[impulsesInUsLength];
 uint32_t triggermS = 0;
 
 void checkpointSetup() {
+    Serial.println("Started in checkpoint mode");
     pinMode(IRReciever, INPUT);
     EEPROM.get(5, triggermS);
     Serial.print("Current trigger time(ms): ");
@@ -84,48 +85,11 @@ void processIRSignal(uint8_t IRPin) {
     Serial.println(teamToTeamName(currentTeam));
 }
 
-int processSettingParameter() {
-    int parameter = 0;
-    while (true){
-        if (isClicking(settingButton1)){
-            if (parameter <= 8){
-                ++parameter;
-            } else if (parameter == 9){
-                parameter = 0;
-            }
-
-            waitToUnclicking(settingButton1);
-            Serial.print("Current parameter has been set to ");
-            Serial.print(parameter);
-            Serial.println(".");
-        }
-
-        if (isClicking(settingButton2)){
-            waitToUnclicking(settingButton2);
-            return parameter;
-        }
-    }
-}
-
-void logParameter(int parameterNumber, int parameterValue) {
-    Serial.print("Parameter ");
-    char parameterNumberInString[4];
-    itoa(parameterNumber, parameterNumberInString, 4);
-    Serial.print(parameterNumberInString);
-
-    Serial.print(" has been set to ");
-
-    char parameterValueInString[4];
-    itoa(parameterValue, parameterValueInString, 4);
-    Serial.print(parameterValueInString);
-    Serial.println(".");
-}
-
 uint32_t processSettingsMode() {
     static constexpr int parametersAmount = 4;
     uint32_t parameters[parametersAmount];
     for (int i = 0; i < parametersAmount; ++i){
-        parameters[i] = processSettingParameter();
+        parameters[i] = processSettingParameter(10);
         logParameter(i, parameters[i]);
     }
 

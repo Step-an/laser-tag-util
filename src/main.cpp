@@ -4,26 +4,26 @@
 
 enum Mode{
     checkpoint,
-    base,
+    baseMode,
 } mode;
 void setup() {
     Serial.begin(9600);
     while (!Serial);
 
     if(digitalRead(settingButton2))
-        mode = base;
+        mode = baseMode;
     else
         mode = checkpoint;
 
     if (mode == checkpoint)
         checkpointSetup();
     else
-        baseSetup();
+        base::setup();
 }
 
 void loop() {
     if (mode == checkpoint)
         checkpointUpdate();
     else
-        baseUpdate();
+        base::update();
 }

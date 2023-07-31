@@ -1,7 +1,9 @@
 #ifndef CHECKPOINT_BASE_H
 #define CHECKPOINT_BASE_H
 
-void baseSetup();
+namespace base {
+    void setup();
 
-void baseUpdate();
+    void update();
+}
 #endif //CHECKPOINT_BASE_H

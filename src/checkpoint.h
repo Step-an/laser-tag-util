@@ -26,8 +26,5 @@ void syncTeamsTime();
 
 void processIRSignal(uint8_t IRPin);
 
-int processSettingParameter();
-
-void logParameter(int parameterNumber, int parameterValue);
 uint32_t processSettingsMode();
 #endif //CHECKPOINT_CHECKPOINT_H
