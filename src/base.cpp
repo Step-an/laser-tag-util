@@ -4,14 +4,12 @@
 #include "base.h"
 #include "pin-defenition.h"
 #include "button-process.h"
+#include "settings.h"
 
 namespace base {
-    enum BaseMode {
-        ammo,
-        life,
-    } mode;
 
-    uint32_t triggerms = 0;
+
+    Settings settings;
     bool isReady = true;
 
     uint32_t currentTime = 0;
@@ -23,12 +21,11 @@ namespace base {
             waitToUnclicking(settingButton1);
             Serial.println("Settings mode entered");
 
-
             auto param0 = processSettingParameter(2);
             if (param0 == 0) {
-                mode = life;
+                settings.mode = life;
             } else if (param0 == 1) {
-                mode = ammo;
+                settings.mode = ammo;
             }
             logParameter(0, param0);
 
@@ -38,33 +35,31 @@ namespace base {
             auto param2 = processSettingParameter(10);
             logParameter(2, param2);
 
-            triggerms = param1 * 1000 + param2 * 10000;
+            settings.triggerTimeMs = param1 * 1000 + param2 * 10000;
 
 
-            EEPROM.put(5, triggerms);
-            EEPROM.put(10, mode);
+            EEPROM.put(baseSettingsAddress, settings);
 
             Serial.println("Settings accepted");
         }
 
-        EEPROM.get(5, triggerms);
-        EEPROM.get(10, mode);
+        EEPROM.get(baseSettingsAddress, settings);
 
         Serial.print("Mode: ");
-        if (mode == ammo){
+        if (settings.mode == ammo){
             Serial.println("ammo recovery");
-        } else if (mode == life){
+        } else if (settings.mode == life){
             Serial.println("life recovery");
         }
 
         Serial.print("Trigger time(ms): ");
-        Serial.println(triggerms);
+        Serial.println(settings.triggerTimeMs);
     }
 
     void update() {
         if (!isReady)
             syncTime();
-        
+
         if (isClicking(baseTriggerButton)){
             if (!isReady)
                 return;
@@ -82,7 +77,7 @@ namespace base {
         currentTime += timeOfChanging - lastUpdateTime;
         lastUpdateTime = timeOfChanging;
 
-        if (currentTime >= triggerms){
+        if (currentTime >= settings.triggerTimeMs){
             setReadyState(true);
         }
     }

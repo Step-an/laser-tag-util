@@ -8,23 +8,29 @@
 #include "button-process.h"
 #include "laser-process.h"
 
-enum Team : uint8_t {
-    Red = 0,
-    Blue = 1,
-    Yellow = 2,
-    Green = 3,
-    None = 4,
-};
+namespace checkpoint {
+    struct Settings{
+        uint32_t triggermS;
+    };
+    enum Team : uint8_t {
+        Red = 0,
+        Blue = 1,
+        Yellow = 2,
+        Green = 3,
+        None = 4,
+    };
 
-void checkpointSetup();
+    void setup();
 
-void checkpointUpdate();
-char const *teamToTeamName(Team team);
+    void update();
 
-void syncTeamsTime();
+    char const *teamToTeamName(Team team);
+
+    void syncTeamsTime();
 
 
-void processIRSignal(uint8_t IRPin);
+    void processIRSignal(uint8_t IRPin);
 
-uint32_t processSettingsMode();
+    uint32_t processSettingsMode();
+}
 #endif //CHECKPOINT_CHECKPOINT_H

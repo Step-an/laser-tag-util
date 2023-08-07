@@ -3,7 +3,7 @@
 #include "base.h"
 
 enum Mode{
-    checkpoint,
+    checkpointMode,
     baseMode,
 } mode;
 void setup() {
@@ -13,17 +13,17 @@ void setup() {
     if(digitalRead(settingButton2))
         mode = baseMode;
     else
-        mode = checkpoint;
+        mode = checkpointMode;
 
-    if (mode == checkpoint)
-        checkpointSetup();
+    if (mode == checkpointMode)
+        checkpoint::setup();
     else
         base::setup();
 }
 
 void loop() {
-    if (mode == checkpoint)
-        checkpointUpdate();
+    if (mode == checkpointMode)
+        checkpoint::update();
     else
         base::update();
 }
