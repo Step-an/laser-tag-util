@@ -12,6 +12,10 @@ namespace base {
     } mode;
 
     uint32_t triggerms = 0;
+    bool isReady = true;
+
+    uint32_t currentTime = 0;
+    uint32_t lastUpdateTime = 0;
 
     void setup() {
         Serial.println("Started in base mode");
@@ -58,7 +62,44 @@ namespace base {
     }
 
     void update() {
+        if (!isReady)
+            syncTime();
+        
+        if (isClicking(baseTriggerButton)){
+            if (!isReady)
+                return;
 
+            createImpulse();
+            setReadyState(false);
+
+            currentTime = 0;
+            lastUpdateTime = millis();
+        }
     }
 
+    void syncTime() {
+        uint32_t timeOfChanging = millis();
+        currentTime += timeOfChanging - lastUpdateTime;
+        lastUpdateTime = timeOfChanging;
+
+        if (currentTime >= triggerms){
+            setReadyState(true);
+        }
+    }
+
+    void setReadyState(bool state) {
+        if (state){
+            digitalWrite(notReadyLight, 0);
+            digitalWrite(readyLight, 1);
+        } else{
+            digitalWrite(notReadyLight, 1);
+            digitalWrite(readyLight, 0);
+        }
+
+        isReady = state;
+    }
+
+    void createImpulse() {
+        Serial.println("Impulse has been created");
+    }
 }

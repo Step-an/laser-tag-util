@@ -20,4 +20,9 @@ constexpr uint8_t IRReciever = 3;
 constexpr uint8_t settingButton1 = 14;
 constexpr uint8_t settingButton2 = 15;
 
+constexpr uint8_t baseTriggerButton = 18;
+
+constexpr uint8_t readyLight = 43;
+constexpr uint8_t notReadyLight = 44;
+
 #endif //CHECKPOINT_PIN_DEFENITION_H
