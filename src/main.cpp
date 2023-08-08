@@ -20,6 +20,9 @@ void setup() {
     pinMode(settingButton4, INPUT);
     pinMode(settingButton5, INPUT);
 
+    pinMode(indicatorLight1, OUTPUT);
+    pinMode(indicatorLight2, OUTPUT);
+
     pinMode(IRReciever, INPUT);
 
     pinMode(baseTriggerButton, INPUT);

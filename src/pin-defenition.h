@@ -23,6 +23,8 @@ constexpr uint8_t settingButton3 = 42;
 constexpr uint8_t settingButton4 = 47;
 constexpr uint8_t settingButton5 = 48;
 
+constexpr uint8_t indicatorLight1 = 49;
+constexpr uint8_t indicatorLight2 = 41;
 
 constexpr uint8_t baseTriggerButton = 18;
 

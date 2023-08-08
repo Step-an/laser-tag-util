@@ -1,5 +1,6 @@
 #include "checkpoint.h"
 #include "settings.h"
+#include "settings-indication.h"
 
 namespace checkpoint {
     uint32_t teamsTime[4]{0, 0, 0, 0};
@@ -91,8 +92,9 @@ namespace checkpoint {
         static constexpr int parametersAmount = 4;
         uint32_t parameters[parametersAmount];
         for (int i = 0; i < parametersAmount; ++i) {
-            parameters[i] = processSettingParameter(10);
-            logParameter(i, parameters[i]);
+            enteringLoop(i);
+            parameters[i] = processSettingParameter(10, i);
+            submittingLoop(parameters[i], i);
         }
 
         return (parameters[0] + parameters[1] * 10 + parameters[2] * 60 + parameters[3] * 10 * 60) * 1000;

@@ -5,6 +5,7 @@
 #include "pin-defenition.h"
 #include "button-process.h"
 #include "settings.h"
+#include "settings-indication.h"
 
 namespace base {
 
@@ -21,19 +22,23 @@ namespace base {
             waitToUnclicking(settingButton1);
             Serial.println("Settings mode entered");
 
-            auto param0 = processSettingParameter(2);
+            enteringLoop(0);
+            auto param0 = processSettingParameter(2, 0);
+            submittingLoop(param0, 0);
+
             if (param0 == 0) {
                 settings.mode = life;
             } else if (param0 == 1) {
                 settings.mode = ammo;
             }
-            logParameter(0, param0);
 
-            auto param1 = processSettingParameter(10);
-            logParameter(1, param1);
+            enteringLoop(1);
+            auto param1 = processSettingParameter(10, 1);
+            submittingLoop(param1, 1);
 
-            auto param2 = processSettingParameter(10);
-            logParameter(2, param2);
+            enteringLoop(2);
+            auto param2 = processSettingParameter(10, 2);
+            submittingLoop(param2, 2);
 
             settings.triggerTimeMs = param1 * 1000 + param2 * 10000;
 
