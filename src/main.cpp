@@ -1,11 +1,15 @@
 #include <Arduino.h>
 #include "checkpoint.h"
 #include "base.h"
+#include "destroyable-target.h"
 
 enum Mode{
     checkpointMode,
     baseMode,
+    destroyableTargetMode,
 } mode;
+void (*startup)() = nullptr;
+void (*update)() = nullptr;
 void setup() {
     Serial.begin(9600);
     while (!Serial);
@@ -22,20 +26,24 @@ void setup() {
 
     pinMode(readyLight, OUTPUT);
     pinMode(notReadyLight, OUTPUT);
-    if(digitalRead(settingButton2))
-        mode = baseMode;
-    else
-        mode = checkpointMode;
 
-    if (mode == checkpointMode)
-        checkpoint::setup();
-    else
-        base::setup();
+    if (isClicking(settingButton2) && isClicking(settingButton3)){
+        mode = destroyableTargetMode;
+        startup = DestroyableTarget::setup;
+        update = DestroyableTarget::update;
+    } else if (isClicking(settingButton2) && !isClicking(settingButton3)){
+        mode = baseMode;
+        startup = base::setup;
+        update = base::update;
+    } else if (!isClicking(settingButton2) && !isClicking(settingButton3)){
+        mode = checkpointMode;
+        startup = checkpoint::setup;
+        update = checkpoint::update;
+    }
+
+    startup();
 }
 
 void loop() {
-    if (mode == checkpointMode)
-        checkpoint::update();
-    else
-        base::update();
+    setup();
 }
