@@ -19,6 +19,10 @@ constexpr uint8_t IRReciever = 3;
 // Settings buttons
 constexpr uint8_t settingButton1 = 14;
 constexpr uint8_t settingButton2 = 15;
+constexpr uint8_t settingButton3 = 42;
+constexpr uint8_t settingButton4 = 47;
+constexpr uint8_t settingButton5 = 48;
+
 
 constexpr uint8_t baseTriggerButton = 18;
 
