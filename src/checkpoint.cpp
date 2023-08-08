@@ -1,6 +1,7 @@
 #include "checkpoint.h"
 #include "settings.h"
 #include "settings-indication.h"
+#include "laser-packet-process.h"
 
 namespace checkpoint {
     uint32_t teamsTime[4]{0, 0, 0, 0};
@@ -71,19 +72,22 @@ namespace checkpoint {
             return;
 
         uint16_t packetSize = rawImpulsesLength - 1;
+        auto pType = parsePacket(packet, packetSize);
 
-        if (packetSize != 14 || packet[0] != 0)
+        if(pType == command && commandPacket.messageID == 0x83 && commandPacket.messageData == 0x02){
+            currentTeam = None;
+            for (int i = 0; i < 4; ++i) {
+                teamsTime[i] = 0;
+            }
+            lastChangingTime = millis();
+            Serial.println("Current team has been reset");
+            return;
+        }
+
+        if (pType != shot)
             return;
 
-        uint8_t team = (packet[8] << 1) | packet[9];
-
-        if (team > 3)
-            return;
-
-
-        syncTeamsTime();
-
-        currentTeam = static_cast<Team>(team);
+        currentTeam = static_cast<Team>(shotPacket.shooterTeam);
         Serial.print("Recapturing. New team: ");
         Serial.println(teamToTeamName(currentTeam));
     }
