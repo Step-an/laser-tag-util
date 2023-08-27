@@ -8,7 +8,7 @@ PacketType parsePacket(uint8_t *packet, uint16_t packetSize) {
         return wrongPacket;
 
     applyBits(packetSize, packet);
-    if (packet[0])
+    if (packet[0] & 0b10000000)
         return parseMessage(packet, packetSize);
     else
         return parseShot(packet, packetSize);

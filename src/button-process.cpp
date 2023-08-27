@@ -22,9 +22,8 @@ void waitToUnclicking(uint8_t button) {
 
 int processSettingParameter(uint8_t parametersAmount, int loopNumber) {
     int parameter = 0;
+    iterationInLoop(parameter, loopNumber);
     while (true){
-        iterationInLoop(parameter, loopNumber);
-
         if (isClicking(settingButton1)){
             if (parameter < parametersAmount - 1){
                 ++parameter;
@@ -33,6 +32,7 @@ int processSettingParameter(uint8_t parametersAmount, int loopNumber) {
             }
 
             waitToUnclicking(settingButton1);
+            iterationInLoop(parameter, loopNumber);
         }
 
         if (isClicking(settingButton2)){
